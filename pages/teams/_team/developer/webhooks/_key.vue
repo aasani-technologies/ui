@@ -43,41 +43,41 @@
               label="Event"
               :options="events"
               required
-              @input="val => (webhook.event = val)"
+              @input="(val) => (webhook.event = val)"
             />
             <Input
               label="URL"
               placeholder="Enter a URL for this webhook"
               :value="webhook.url"
-              @input="val => (webhook.url = val)"
+              @input="(val) => (webhook.url = val)"
             />
             <Select
               :value="webhook.contentType"
               label="Content type"
               :options="[
                 'application/json',
-                'application/x-www-form-urlencoded'
+                'application/x-www-form-urlencoded',
               ]"
               required
-              @input="val => (webhook.contentType = val)"
+              @input="(val) => (webhook.contentType = val)"
             />
             <Input
               label="Secret"
               placeholder="Enter a secret key for this webhook"
               :value="webhook.secret"
-              @input="val => (webhook.secret = val)"
+              @input="(val) => (webhook.secret = val)"
             />
             <Checkbox
               :value="webhook.isActive"
               label="Activate this webhook"
-              @input="val => (webhook.isActive = val)"
+              @input="(val) => (webhook.isActive = val)"
             />
             <div>
               <button class="button">Update webhook</button>
               <button
                 class="button button--color-danger"
                 type="button"
-                style="margin-left: 0.5rem"
+                style="margin-left: 0.5rem;"
                 @click="() => (showDelete = true)"
               >
                 <font-awesome-icon class="icon icon--mr-1" icon="trash" />
@@ -111,20 +111,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { getAllCountries } from "countries-and-timezones";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faPencilAlt,
-  faArrowDown,
-  faSync,
-  faTrash,
-  faArrowLeft,
-  faCopy
-} from "@fortawesome/free-solid-svg-icons";
-import copy from "copy-to-clipboard";
 import Loading from "@/components/Loading.vue";
 import Confirm from "@/components/Confirm.vue";
 import Developer from "@/components/sidebars/Developer.vue";
@@ -136,6 +122,20 @@ import Select from "@/components/form/Select.vue";
 import { User } from "@/types/auth";
 import { Webhooks, emptyPagination, Webhook } from "@/types/manage";
 import translations from "@/locales/en";
+import copy from "copy-to-clipboard";
+import {
+  faPencilAlt,
+  faArrowDown,
+  faSync,
+  faTrash,
+  faArrowLeft,
+  faCopy,
+} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllCountries } from "countries-and-timezones";
+import { mapGetters } from "vuex";
+import { Component, Vue, Watch } from "vue-property-decorator";
 const events = translations.webhooks;
 library.add(faPencilAlt, faArrowDown, faSync, faTrash, faCopy, faArrowLeft);
 
@@ -149,9 +149,9 @@ library.add(faPencilAlt, faArrowDown, faSync, faTrash, faCopy, faArrowLeft);
     Developer,
     Select,
     LargeMessage,
-    Checkbox
+    Checkbox,
   },
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class ManageSettings extends Vue {
   webhooks: Webhooks = emptyPagination;
@@ -166,7 +166,7 @@ export default class ManageSettings extends Vue {
       ...this.$store.getters["manage/webhook"](
         this.$route.params.team,
         this.$route.params.key
-      )
+      ),
     };
   }
 
@@ -175,12 +175,12 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("manage/getWebhook", {
         team: this.$route.params.team,
-        id: this.$route.params.key
+        id: this.$route.params.key,
       })
-      .then(webhook => {
+      .then((webhook) => {
         this.webhook = { ...webhook };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loading = ""));
@@ -197,12 +197,12 @@ export default class ManageSettings extends Vue {
       .dispatch("manage/updateWebhook", {
         team: this.$route.params.team,
         id: this.$route.params.key,
-        ...webhook
+        ...webhook,
       })
-      .then(webhook => {
+      .then((webhook) => {
         this.webhook = { ...webhook };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => {
@@ -216,15 +216,15 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("manage/deleteWebhook", {
         team: this.$route.params.team,
-        id: this.$route.params.key
+        id: this.$route.params.key,
       })
-      .then(webhooks => {
+      .then((webhooks) => {
         this.webhooks = { ...webhooks };
         this.$router.push(
           `/teams/${this.$route.params.team}/developer/webhooks`
         );
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loading = ""));

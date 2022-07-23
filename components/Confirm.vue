@@ -5,13 +5,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
 import Modal from "@/components/Modal.vue";
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
   components: {
-    Modal
-  }
+    Modal,
+  },
 })
 export default class Confirm extends Vue {
   @Prop() onClose;

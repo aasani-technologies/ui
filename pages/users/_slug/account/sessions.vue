@@ -119,21 +119,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { getAllCountries } from "countries-and-timezones";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import UAParser from "ua-parser-js";
-import {
-  faArrowDown,
-  faSync,
-  faSignOutAlt,
-  faCheckCircle,
-  faExclamationCircle,
-  faStar,
-  faEnvelopeOpen
-} from "@fortawesome/free-solid-svg-icons";
 import Loading from "@/components/Loading.vue";
 import Confirm from "@/components/Confirm.vue";
 import AccountSidebar from "@/components/sidebars/Account.vue";
@@ -144,6 +129,21 @@ import Checkbox from "@/components/form/Checkbox.vue";
 import Select from "@/components/form/Select.vue";
 import { User } from "@/types/auth";
 import { Sessions, emptyPagination, Session } from "@/types/users";
+import {
+  faArrowDown,
+  faSync,
+  faSignOutAlt,
+  faCheckCircle,
+  faExclamationCircle,
+  faStar,
+  faEnvelopeOpen,
+} from "@fortawesome/free-solid-svg-icons";
+import UAParser from "ua-parser-js";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllCountries } from "countries-and-timezones";
+import { mapGetters } from "vuex";
+import { Component, Vue, Watch } from "vue-property-decorator";
 library.add(
   faArrowDown,
   faSync,
@@ -164,9 +164,9 @@ library.add(
     FontAwesomeIcon,
     Select,
     LargeMessage,
-    Checkbox
+    Checkbox,
   },
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class ManageSettings extends Vue {
   sessions: Sessions = emptyPagination;
@@ -182,7 +182,7 @@ export default class ManageSettings extends Vue {
 
   private created() {
     this.sessions = {
-      ...this.$store.getters["users/sessions"](this.$route.params.slug)
+      ...this.$store.getters["users/sessions"](this.$route.params.slug),
     };
   }
 
@@ -190,10 +190,10 @@ export default class ManageSettings extends Vue {
     this.loading = "Loading your sessions";
     this.$store
       .dispatch("users/getSessions", { slug: this.$route.params.slug })
-      .then(sessions => {
+      .then((sessions) => {
         this.sessions = { ...sessions };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loading = ""));
@@ -208,14 +208,14 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("users/getSessions", {
         slug: this.$route.params.slug,
-        start: this.$store.state.users.sessions[this.$route.params.slug].next
+        start: this.$store.state.users.sessions[this.$route.params.slug].next,
       })
       .then(() => {
         this.sessions = {
-          ...this.$store.getters["users/sessions"](this.$route.params.slug)
+          ...this.$store.getters["users/sessions"](this.$route.params.slug),
         };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loadingMore = false));
@@ -227,12 +227,12 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("users/deleteSession", {
         slug: this.$route.params.slug,
-        id: key
+        id: key,
       })
-      .then(sessions => {
+      .then((sessions) => {
         this.sessions = { ...sessions };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loading = ""));

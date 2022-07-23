@@ -36,13 +36,13 @@
                 label="Time filter"
                 :options="timeOptions"
                 :value="timeFilter"
-                @input="val => (timeFilter = val)"
+                @input="(val) => (timeFilter = val)"
               />
               <div
                 class="column column--type-shrink"
                 style="display: flex; margin-bottom: 1rem; margin-top: 2rem;"
               >
-                <button style="white-space: nowrap" class="button">
+                <button style="white-space: nowrap;" class="button">
                   Load server logs
                 </button>
               </div>
@@ -92,13 +92,13 @@
                     <td
                       v-if="
                         log._source &&
-                          log._source.completedDate &&
-                          log._source.date
+                        log._source.completedDate &&
+                        log._source.date
                       "
                     >
                       {{
                         new Date(log._source.completedDate).getTime() -
-                          new Date(log._source.date).getTime()
+                        new Date(log._source.date).getTime()
                       }}
                       ms
                     </td>
@@ -150,18 +150,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import download from "downloadjs";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faEye,
-  faArrowDown,
-  faSync,
-  faCloudDownloadAlt
-} from "@fortawesome/free-solid-svg-icons";
-import WhichBrowser from "which-browser";
 import { emptyPagination, ServerLogs } from "@/types/admin";
 import Select from "@/components/form/Select.vue";
 import TimeAgo from "@/components/TimeAgo.vue";
@@ -170,6 +158,18 @@ import HTTPStatus from "@/components/HTTPStatus.vue";
 import LargeMessage from "@/components/LargeMessage.vue";
 import Loading from "@/components/Loading.vue";
 import AnalyticsIconSet from "@/components/AnalyticsIconSet.vue";
+import WhichBrowser from "which-browser";
+import {
+  faEye,
+  faArrowDown,
+  faSync,
+  faCloudDownloadAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import download from "downloadjs";
+import { mapGetters } from "vuex";
+import { Component, Vue } from "vue-property-decorator";
 library.add(faEye, faArrowDown, faSync, faCloudDownloadAlt);
 
 @Component({
@@ -182,8 +182,8 @@ library.add(faEye, faArrowDown, faSync, faCloudDownloadAlt);
     HTTPStatus,
     IconText,
     AnalyticsIconSet,
-    FontAwesomeIcon
-  }
+    FontAwesomeIcon,
+  },
 })
 export default class Dashboard extends Vue {
   loading = "";
@@ -197,12 +197,12 @@ export default class Dashboard extends Vue {
     "10m": "Last 10 minutes",
     "24h": "Last 24 hours",
     "7d": "Last 7 days",
-    "30d": "Last 30 days"
+    "30d": "Last 30 days",
   };
 
   private created() {
     this.data = {
-      ...this.$store.getters["admin/serverLogs"]()
+      ...this.$store.getters["admin/serverLogs"](),
     };
   }
 
@@ -216,14 +216,14 @@ export default class Dashboard extends Vue {
     this.$store
       .dispatch("admin/getServerLogs", {
         range: this.timeFilter,
-        from: this.from
+        from: this.from,
       })
-      .then(data => {
+      .then((data) => {
         this.data = data;
         if (!data || !data.data || !data.data.length)
           throw new Error("no-data");
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loading = ""));
@@ -238,14 +238,14 @@ export default class Dashboard extends Vue {
     this.$store
       .dispatch("admin/getServerLogs", {
         range: this.timeFilter,
-        from: this.from
+        from: this.from,
       })
       .then(() => {
         this.data = {
-          ...this.$store.getters["admin/serverLogs"]()
+          ...this.$store.getters["admin/serverLogs"](),
         };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loadingMore = false));

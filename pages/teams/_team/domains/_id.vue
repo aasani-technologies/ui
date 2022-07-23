@@ -47,7 +47,7 @@
               Add a DNS record to your domain
             </label>
           </div>
-          <div v-if="hasError" style="margin-bottom: 2rem">
+          <div v-if="hasError" style="margin-bottom: 2rem;">
             <p>
               <strong>Error:</strong> We weren't able to verify your domain. If
               you've just added a DNS record, it may take up to 24 hours to
@@ -65,9 +65,7 @@
               <li>
                 You should be able to access the file:
                 <a
-                  :href="
-                    `http://${domain.domain}/.well-known/staart-verify.txt`
-                  "
+                  :href="`http://${domain.domain}/.well-known/staart-verify.txt`"
                   target="_blank"
                   >http://{{ domain.domain }}/.well-known/staart-verify.txt</a
                 >
@@ -87,7 +85,7 @@
             >
               Download file
             </button>
-            <button class="button" style="margin-left: 0.5rem">
+            <button class="button" style="margin-left: 0.5rem;">
               Check verification
             </button>
           </div>
@@ -135,18 +133,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { getAllCountries } from "countries-and-timezones";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faTrash,
-  faPencilAlt,
-  faSync,
-  faArrowLeft
-} from "@fortawesome/free-solid-svg-icons";
-import download from "downloadjs";
 import LargeMessage from "@/components/LargeMessage.vue";
 import Loading from "@/components/Loading.vue";
 import Country from "@/components/Country.vue";
@@ -155,6 +141,18 @@ import Input from "@/components/form/Input.vue";
 import Select from "@/components/form/Select.vue";
 import Checkbox from "@/components/form/Checkbox.vue";
 import { Domain } from "@/types/manage";
+import download from "downloadjs";
+import {
+  faTrash,
+  faPencilAlt,
+  faSync,
+  faArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllCountries } from "countries-and-timezones";
+import { mapGetters } from "vuex";
+import { Component, Vue, Watch } from "vue-property-decorator";
 library.add(faTrash, faPencilAlt, faSync, faArrowLeft);
 
 @Component({
@@ -166,12 +164,12 @@ library.add(faTrash, faPencilAlt, faSync, faArrowLeft);
     Input,
     Select,
     Checkbox,
-    FontAwesomeIcon
+    FontAwesomeIcon,
   },
   computed: mapGetters({
-    domains: "manage/domains"
+    domains: "manage/domains",
   }),
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class ManageMembers extends Vue {
   domains!: any;
@@ -185,9 +183,9 @@ export default class ManageMembers extends Vue {
     this.$store
       .dispatch("manage/getDomain", {
         team: this.$route.params.team,
-        id: this.$route.params.id
+        id: this.$route.params.id,
       })
-      .then(domain => {
+      .then((domain) => {
         this.domain = domain;
       })
       .catch(() => {})
@@ -209,7 +207,7 @@ export default class ManageMembers extends Vue {
       .dispatch("manage/verifyDomain", {
         team: this.$route.params.team,
         id: this.$route.params.id,
-        method: this.verifyOption
+        method: this.verifyOption,
       })
       .then(() => {
         this.$router.push(`/teams/${this.$route.params.team}/settings/general`);

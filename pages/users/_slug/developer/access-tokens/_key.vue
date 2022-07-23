@@ -41,7 +41,7 @@
           <button
             type="button"
             class="button button--color-danger"
-            style="margin-left: 0.5rem"
+            style="margin-left: 0.5rem;"
             @click.prevent="showDelete = accessToken"
           >
             <font-awesome-icon class="icon icon--mr-1" icon="trash" />
@@ -56,13 +56,13 @@
               label="Name"
               placeholder="Enter a name for this access token"
               :value="accessToken.name"
-              @input="val => (accessToken.name = val)"
+              @input="(val) => (accessToken.name = val)"
             />
             <CheckList
               label="Permissions"
               :options="scopes"
               :value="accessToken.scopes"
-              @input="val => (accessToken.scopes = val)"
+              @input="(val) => (accessToken.scopes = val)"
             />
             <button class="button">Update access token</button>
           </form>
@@ -112,22 +112,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { getAllCountries } from "countries-and-timezones";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faPencilAlt,
-  faArrowDown,
-  faSync,
-  faTrash,
-  faEye,
-  faEyeSlash,
-  faArrowLeft,
-  faCopy
-} from "@fortawesome/free-solid-svg-icons";
-import copy from "copy-to-clipboard";
 import Loading from "@/components/Loading.vue";
 import Confirm from "@/components/Confirm.vue";
 import TimeAgo from "@/components/TimeAgo.vue";
@@ -141,6 +125,22 @@ import { User } from "@/types/auth";
 import { AccessTokens, emptyPagination, AccessToken } from "@/types/users";
 import translations from "@/locales/en";
 import { removeNulls } from "@/helpers/crud";
+import copy from "copy-to-clipboard";
+import {
+  faPencilAlt,
+  faArrowDown,
+  faSync,
+  faTrash,
+  faEye,
+  faEyeSlash,
+  faArrowLeft,
+  faCopy,
+} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllCountries } from "countries-and-timezones";
+import { mapGetters } from "vuex";
+import { Component, Vue, Watch } from "vue-property-decorator";
 const scopes = translations.userScopes;
 library.add(
   faPencilAlt,
@@ -164,9 +164,9 @@ library.add(
     CheckList,
     Select,
     LargeMessage,
-    Checkbox
+    Checkbox,
   },
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class ManageSettings extends Vue {
   accessTokens: AccessTokens = emptyPagination;
@@ -179,7 +179,7 @@ export default class ManageSettings extends Vue {
 
   private created() {
     this.accessTokens = {
-      ...this.$store.getters["users/accessTokens"](this.$route.params.slug)
+      ...this.$store.getters["users/accessTokens"](this.$route.params.slug),
     };
   }
 
@@ -188,12 +188,12 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("users/getAccessToken", {
         slug: this.$route.params.slug,
-        id: this.$route.params.key
+        id: this.$route.params.key,
       })
-      .then(accessToken => {
+      .then((accessToken) => {
         this.accessToken = { ...accessToken };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loading = ""));
@@ -213,19 +213,19 @@ export default class ManageSettings extends Vue {
         "userId",
         "expiresAt",
         "createdAt",
-        "updatedAt"
-      ].forEach(k => delete accessToken[k]);
+        "updatedAt",
+      ].forEach((k) => delete accessToken[k]);
     }
     this.$store
       .dispatch("users/updateAccessToken", {
         slug: this.$route.params.slug,
         id: this.$route.params.key,
-        ...accessToken
+        ...accessToken,
       })
-      .then(accessToken => {
+      .then((accessToken) => {
         this.accessToken = { ...accessToken };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => {
@@ -239,13 +239,13 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("users/deleteAccessToken", {
         slug: this.$route.params.slug,
-        id: key
+        id: key,
       })
-      .then(accessTokens => {
+      .then((accessTokens) => {
         this.accessTokens = { ...accessTokens };
         this.$router.push(`/users/${this.$route.params.slug}/access-tokens`);
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loading = ""));

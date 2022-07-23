@@ -13,13 +13,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
 import LargeMessage from "@/components/LargeMessage.vue";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   components: {
-    LargeMessage
-  }
+    LargeMessage,
+  },
 })
 export default class SuccessSubscription extends Vue {
   private created() {}

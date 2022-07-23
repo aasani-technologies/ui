@@ -11,13 +11,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
 import LargeMessage from "@/components/LargeMessage.vue";
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
   components: {
-    LargeMessage
-  }
+    LargeMessage,
+  },
 })
 export default class Error extends Vue {
   @Prop() error;

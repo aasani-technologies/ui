@@ -58,7 +58,7 @@
           label="Role"
           :options="membershipRoles"
           required
-          @input="val => (newUserRole = val)"
+          @input="(val) => (newUserRole = val)"
         />
         <button class="button">Update membership</button>
       </form>
@@ -67,17 +67,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { getAllCountries } from "countries-and-timezones";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faTrash,
-  faPencilAlt,
-  faSync,
-  faArrowLeft
-} from "@fortawesome/free-solid-svg-icons";
 import Loading from "@/components/Loading.vue";
 import Country from "@/components/Country.vue";
 import User from "@/components/User.vue";
@@ -87,6 +76,17 @@ import Select from "@/components/form/Select.vue";
 import Checkbox from "@/components/form/Checkbox.vue";
 import locale from "@/locales/en";
 import { Membership } from "@/types/manage";
+import {
+  faTrash,
+  faPencilAlt,
+  faSync,
+  faArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllCountries } from "countries-and-timezones";
+import { mapGetters } from "vuex";
+import { Component, Vue, Watch } from "vue-property-decorator";
 library.add(faTrash, faPencilAlt, faSync, faArrowLeft);
 
 @Component({
@@ -98,12 +98,12 @@ library.add(faTrash, faPencilAlt, faSync, faArrowLeft);
     User,
     Select,
     Checkbox,
-    FontAwesomeIcon
+    FontAwesomeIcon,
   },
   computed: mapGetters({
-    members: "manage/members"
+    members: "manage/members",
   }),
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class ManageMembers extends Vue {
   members!: any;
@@ -117,9 +117,9 @@ export default class ManageMembers extends Vue {
     this.$store
       .dispatch("manage/getMembership", {
         team: this.$route.params.team,
-        id: this.$route.params.id
+        id: this.$route.params.id,
       })
-      .then(membership => {
+      .then((membership) => {
         this.membership = membership;
         this.newUserRole = membership.role;
       })
@@ -137,7 +137,7 @@ export default class ManageMembers extends Vue {
       .dispatch("manage/updateMembership", {
         team: this.$route.params.team,
         id: this.$route.params.id,
-        role: this.newUserRole
+        role: this.newUserRole,
       })
       .then(() => {})
       .catch(() => {})

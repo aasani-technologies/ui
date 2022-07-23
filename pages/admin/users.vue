@@ -70,14 +70,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faArrowDown, faSync, faEye } from "@fortawesome/free-solid-svg-icons";
 import Loading from "@/components/Loading.vue";
 import TimeAgo from "@/components/TimeAgo.vue";
 import User from "@/components/User.vue";
 import { emptyPagination } from "../../types/admin";
+import { Component, Vue } from "vue-property-decorator";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faArrowDown, faSync, faEye } from "@fortawesome/free-solid-svg-icons";
 library.add(faArrowDown, faSync, faEye);
 
 @Component({
@@ -85,8 +85,8 @@ library.add(faArrowDown, faSync, faEye);
     Loading,
     TimeAgo,
     User,
-    FontAwesomeIcon
-  }
+    FontAwesomeIcon,
+  },
 })
 export default class AdminUsers extends Vue {
   users = emptyPagination;
@@ -105,10 +105,10 @@ export default class AdminUsers extends Vue {
     this.loading = "Loading your users";
     this.$store
       .dispatch("admin/getUsers", {})
-      .then(users => {
+      .then((users) => {
         this.users = { ...users };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .then(() => (this.loading = ""));
@@ -118,14 +118,14 @@ export default class AdminUsers extends Vue {
     this.loadingMore = true;
     this.$store
       .dispatch("admin/getUsers", {
-        start: this.$store.state.admin.users.next
+        start: this.$store.state.admin.users.next,
       })
       .then(() => {
         this.users = {
-          ...this.$store.getters["admin/users"]()
+          ...this.$store.getters["admin/users"](),
         };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loadingMore = false));

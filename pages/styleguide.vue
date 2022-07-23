@@ -245,7 +245,7 @@
         :options="{
           a: { text: 'This is an option' },
           b: { text: 'This is another option' },
-          c: { text: 'This is a third option' }
+          c: { text: 'This is a third option' },
         }"
       />
       <CommaList
@@ -278,10 +278,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
+import Autocomplete from "@/components/form/Autocomplete.vue";
+import Confirm from "@/components/Confirm.vue";
+import Select from "@/components/form/Select.vue";
+import CommaList from "@/components/form/CommaList.vue";
+import CheckList from "@/components/form/CheckList.vue";
+import Checkbox from "@/components/form/Checkbox.vue";
+import DatePicker from "@/components/form/DatePicker.vue";
+import Input from "@/components/form/Input.vue";
+import { getAllCountries } from "countries-and-timezones";
+import {
+  faNodeJs,
+  faVuejs,
+  faAccessibleIcon,
+} from "@fortawesome/free-brands-svg-icons";
 import {
   faSync,
   faUserLock,
@@ -293,22 +303,12 @@ import {
   faFile,
   faLanguage,
   faRocket,
-  faMagic
+  faMagic,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  faNodeJs,
-  faVuejs,
-  faAccessibleIcon
-} from "@fortawesome/free-brands-svg-icons";
-import { getAllCountries } from "countries-and-timezones";
-import Autocomplete from "@/components/form/Autocomplete.vue";
-import Confirm from "@/components/Confirm.vue";
-import Select from "@/components/form/Select.vue";
-import CommaList from "@/components/form/CommaList.vue";
-import CheckList from "@/components/form/CheckList.vue";
-import Checkbox from "@/components/form/Checkbox.vue";
-import DatePicker from "@/components/form/DatePicker.vue";
-import Input from "@/components/form/Input.vue";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { mapGetters } from "vuex";
+import { Component, Vue } from "vue-property-decorator";
 library.add(
   faSync,
   faMagic,
@@ -330,14 +330,14 @@ const allCountries = getAllCountries();
 for (const country in allCountries) {
   const cc = country.toLowerCase();
   countries[cc] = {
-    value: allCountries[country].name
+    value: allCountries[country].name,
     // img: `https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.3.0/flags/1x1/${cc}.svg`
   };
 }
 
 @Component({
   computed: mapGetters({
-    isAuthenticated: "auth/isAuthenticated"
+    isAuthenticated: "auth/isAuthenticated",
   }),
   components: {
     FontAwesomeIcon,
@@ -348,8 +348,8 @@ for (const country in allCountries) {
     CheckList,
     Select,
     Autocomplete,
-    DatePicker
-  }
+    DatePicker,
+  },
 })
 export default class StyleGuide extends Vue {
   showConfirm = false;

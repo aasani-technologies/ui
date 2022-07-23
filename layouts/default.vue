@@ -16,17 +16,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
 import Navbar from "@/components/Navbar.vue";
 import Layout from "@/components/Layout.vue";
 import Footer from "@/components/Footer.vue";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   components: {
     Navbar,
     Layout,
-    Footer
-  }
+    Footer,
+  },
 })
 export default class Default extends Vue {
   private created() {

@@ -7,7 +7,7 @@
     <button
       type="button"
       class="button button--size-small"
-      style="margin-left: 0.5rem"
+      style="margin-left: 0.5rem;"
       @click="deselect"
     >
       Deselect all
@@ -24,7 +24,7 @@
           :help="item.help"
           :question-mark="true"
           :disabled="item.alwaysChecked"
-          @input="val => input(index, val)"
+          @input="(val) => input(index, val)"
         />
       </div>
     </div>
@@ -38,18 +38,18 @@
 </template>
 
 <script lang="ts">
+import Checkbox from "@/components/form/Checkbox.vue";
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
-import Checkbox from "@/components/form/Checkbox.vue";
 library.add(faTimes, faPlus);
 
 @Component({
   components: {
     FontAwesomeIcon,
-    Checkbox
-  }
+    Checkbox,
+  },
 })
 export default class CommaList extends Vue {
   @Prop() value;
@@ -64,9 +64,7 @@ export default class CommaList extends Vue {
   commaList = "";
 
   private created() {
-    this.labelId = Math.random()
-      .toString(36)
-      .substring(7);
+    this.labelId = Math.random().toString(36).substring(7);
   }
 
   private mounted() {
@@ -92,7 +90,7 @@ export default class CommaList extends Vue {
   }
 
   private update() {
-    this.commaList = this.list.filter(item => !!item).join(",");
+    this.commaList = this.list.filter((item) => !!item).join(",");
     this.$emit("input", this.commaList);
   }
 

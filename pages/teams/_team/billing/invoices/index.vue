@@ -98,9 +98,7 @@
                     />
                   </a>
                   <router-link
-                    :to="
-                      `/teams/${$route.params.team}/billing/invoices/${invoice.id}`
-                    "
+                    :to="`/teams/${$route.params.team}/billing/invoices/${invoice.id}`"
                     aria-label="Details"
                     data-balloon-pos="up"
                     class="button button--type-icon"
@@ -145,18 +143,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { getAllCountries } from "countries-and-timezones";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faFileInvoiceDollar,
-  faArrowDown,
-  faSync,
-  faCreditCard,
-  faCloudDownloadAlt
-} from "@fortawesome/free-solid-svg-icons";
 import Loading from "@/components/Loading.vue";
 import TimeAgo from "@/components/TimeAgo.vue";
 import BillingSidebar from "@/components/sidebars/Billing.vue";
@@ -166,6 +152,18 @@ import Checkbox from "@/components/form/Checkbox.vue";
 import Select from "@/components/form/Select.vue";
 import { User } from "@/types/auth";
 import { Invoices, emptyPagination } from "@/types/manage";
+import {
+  faFileInvoiceDollar,
+  faArrowDown,
+  faSync,
+  faCreditCard,
+  faCloudDownloadAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllCountries } from "countries-and-timezones";
+import { mapGetters } from "vuex";
+import { Component, Vue, Watch } from "vue-property-decorator";
 library.add(
   faFileInvoiceDollar,
   faCreditCard,
@@ -183,9 +181,9 @@ library.add(
     FontAwesomeIcon,
     Select,
     LargeMessage,
-    Checkbox
+    Checkbox,
   },
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class ManageSettings extends Vue {
   invoices: Invoices = emptyPagination;
@@ -195,7 +193,7 @@ export default class ManageSettings extends Vue {
 
   private created() {
     this.invoices = {
-      ...this.$store.getters["manage/invoices"](this.$route.params.team)
+      ...this.$store.getters["manage/invoices"](this.$route.params.team),
     };
   }
 
@@ -203,10 +201,10 @@ export default class ManageSettings extends Vue {
     this.loading = "Loading your invoices";
     this.$store
       .dispatch("manage/getInvoices", { team: this.$route.params.team })
-      .then(invoices => {
+      .then((invoices) => {
         this.invoices = { ...invoices };
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response.data.error === "no-customer") this.noBilling = true;
       })
       .finally(() => (this.loading = ""));
@@ -221,14 +219,14 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("manage/getInvoices", {
         team: this.$route.params.team,
-        start: this.$store.state.manage.invoices[this.$route.params.team].next
+        start: this.$store.state.manage.invoices[this.$route.params.team].next,
       })
       .then(() => {
         this.invoices = {
-          ...this.$store.getters["manage/invoices"](this.$route.params.team)
+          ...this.$store.getters["manage/invoices"](this.$route.params.team),
         };
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response.data.error === "no-customer") this.noBilling = true;
       })
       .finally(() => (this.loadingMore = false));

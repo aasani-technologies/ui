@@ -106,7 +106,7 @@
           label="Name"
           placeholder="Enter new user's full name"
           required
-          @input="val => (newUserName = val)"
+          @input="(val) => (newUserName = val)"
         />
         <Input
           :value="newUserEmail"
@@ -114,7 +114,7 @@
           label="Email"
           placeholder="Enter new user's email"
           required
-          @input="val => (newUserEmail = val)"
+          @input="(val) => (newUserEmail = val)"
         />
         <Select
           :value="newUserRole"
@@ -123,7 +123,7 @@
           label-help-to="/"
           :options="membershipRoles"
           required
-          @input="val => (newUserRole = val)"
+          @input="(val) => (newUserRole = val)"
         />
         <button class="button">Send invitation</button>
       </form>
@@ -154,17 +154,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { getAllCountries } from "countries-and-timezones";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faTrash,
-  faPencilAlt,
-  faArrowDown,
-  faSync
-} from "@fortawesome/free-solid-svg-icons";
 import Loading from "@/components/Loading.vue";
 import User from "@/components/User.vue";
 import TimeAgo from "@/components/TimeAgo.vue";
@@ -176,6 +165,17 @@ import { Email } from "@/types/settings";
 import locale from "@/locales/en";
 import { Members, emptyPagination } from "@/types/manage";
 import { User as UserType } from "@/types/auth";
+import {
+  faTrash,
+  faPencilAlt,
+  faArrowDown,
+  faSync,
+} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllCountries } from "countries-and-timezones";
+import { mapGetters } from "vuex";
+import { Component, Vue, Watch } from "vue-property-decorator";
 library.add(faTrash, faPencilAlt, faArrowDown, faSync);
 
 @Component({
@@ -187,12 +187,12 @@ library.add(faTrash, faPencilAlt, faArrowDown, faSync);
     Select,
     Checkbox,
     FontAwesomeIcon,
-    Confirm
+    Confirm,
   },
   computed: mapGetters({
-    user: "auth/user"
+    user: "auth/user",
   }),
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class ManageMembers extends Vue {
   memberships: Members = emptyPagination;
@@ -209,7 +209,7 @@ export default class ManageMembers extends Vue {
 
   private created() {
     this.memberships = {
-      ...this.$store.getters["manage/memberships"](this.$route.params.team)
+      ...this.$store.getters["manage/memberships"](this.$route.params.team),
     };
   }
 
@@ -221,7 +221,7 @@ export default class ManageMembers extends Vue {
     this.loading = "Loading members";
     this.$store
       .dispatch("manage/getMembers", { team: this.$route.params.team })
-      .then(memberships => (this.memberships = { ...memberships }))
+      .then((memberships) => (this.memberships = { ...memberships }))
       .catch(() => {})
       .finally(() => (this.loading = ""));
   }
@@ -232,11 +232,11 @@ export default class ManageMembers extends Vue {
       .dispatch("manage/getMembers", {
         team: this.$route.params.team,
         start: this.$store.state.manage.memberships[this.$route.params.team]
-          .next
+          .next,
       })
-      .then(memberships => {
+      .then((memberships) => {
         this.memberships = {
-          ...this.$store.getters["manage/memberships"](this.$route.params.team)
+          ...this.$store.getters["manage/memberships"](this.$route.params.team),
         };
       })
       .catch(() => {})
@@ -250,9 +250,9 @@ export default class ManageMembers extends Vue {
         name: this.newUserName,
         email: this.newUserEmail,
         role: this.newUserRole,
-        team: this.$route.params.team
+        team: this.$route.params.team,
       })
-      .then(memberships => (this.memberships = { ...memberships }))
+      .then((memberships) => (this.memberships = { ...memberships }))
       .catch(() => {})
       .finally(() => (this.inviting = false));
     this.newUserName = "";
@@ -265,9 +265,9 @@ export default class ManageMembers extends Vue {
     this.$store
       .dispatch("manage/deleteMembership", {
         id,
-        team: this.$route.params.team
+        team: this.$route.params.team,
       })
-      .then(memberships => {
+      .then((memberships) => {
         this.memberships = { ...memberships };
         if (this.user && this.user.id && this.user.id === id) {
           // You just left the team

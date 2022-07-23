@@ -59,9 +59,7 @@
                 </td>
                 <td class="text text--align-right">
                   <router-link
-                    :to="
-                      `/teams/${$route.params.team}/billing/sources/${source.id}`
-                    "
+                    :to="`/teams/${$route.params.team}/billing/sources/${source.id}`"
                     aria-label="Edit"
                     data-balloon-pos="up"
                     class="button button--type-icon"
@@ -115,14 +113,14 @@
               :value="newCard.name"
               label="Name"
               placeholder="Enter your name on card"
-              @input="val => (newCard.name = val)"
+              @input="(val) => (newCard.name = val)"
             />
             <Input
               :value="newCard.number"
               label="Number"
               placeholder="Enter your credit card number"
               required
-              @input="val => (newCard.number = val)"
+              @input="(val) => (newCard.number = val)"
             />
           </div>
           <div class="row">
@@ -131,14 +129,14 @@
               label="Expiry month"
               :options="months"
               required
-              @input="val => (newCard.exp_month = val)"
+              @input="(val) => (newCard.exp_month = val)"
             />
             <Select
               :value="newCard.exp_year"
               label="Expiry year"
               :options="years"
               required
-              @input="val => (newCard.exp_year = val)"
+              @input="(val) => (newCard.exp_year = val)"
             />
             <Input
               :value="newCard.cvc"
@@ -147,7 +145,7 @@
               placeholder="Enter your verification code"
               min="100"
               max="9999"
-              @input="val => (newCard.cvc = val)"
+              @input="(val) => (newCard.cvc = val)"
             />
           </div>
           <button class="button">Add credit card</button>
@@ -176,18 +174,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { getAllCountries } from "countries-and-timezones";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faPencilAlt,
-  faArrowDown,
-  faSync,
-  faCloudDownloadAlt,
-  faTrash
-} from "@fortawesome/free-solid-svg-icons";
 import Confirm from "@/components/Confirm.vue";
 import Loading from "@/components/Loading.vue";
 import TimeAgo from "@/components/TimeAgo.vue";
@@ -199,6 +185,18 @@ import Select from "@/components/form/Select.vue";
 import { User } from "@/types/auth";
 import { Sources, emptyPagination } from "@/types/manage";
 import en from "@/locales/en";
+import {
+  faPencilAlt,
+  faArrowDown,
+  faSync,
+  faCloudDownloadAlt,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllCountries } from "countries-and-timezones";
+import { mapGetters } from "vuex";
+import { Component, Vue, Watch } from "vue-property-decorator";
 library.add(faPencilAlt, faCloudDownloadAlt, faArrowDown, faSync, faTrash);
 const months = en.months;
 
@@ -212,9 +210,9 @@ const months = en.months;
     FontAwesomeIcon,
     Select,
     LargeMessage,
-    Checkbox
+    Checkbox,
   },
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class ManageSettings extends Vue {
   sources: Sources = emptyPagination;
@@ -227,7 +225,7 @@ export default class ManageSettings extends Vue {
     number: "",
     exp_month: 1,
     exp_year: new Date().getUTCFullYear() + 5,
-    name: ""
+    name: "",
   };
 
   months = months;
@@ -235,7 +233,7 @@ export default class ManageSettings extends Vue {
 
   private created() {
     this.sources = {
-      ...this.$store.getters["manage/sources"](this.$route.params.team)
+      ...this.$store.getters["manage/sources"](this.$route.params.team),
     };
     for (let i = 0; i < 20; i++) {
       this.years.push(new Date().getUTCFullYear() + i);
@@ -246,10 +244,10 @@ export default class ManageSettings extends Vue {
     this.loading = "Loading your credit cards";
     this.$store
       .dispatch("manage/getSources", { team: this.$route.params.team })
-      .then(sources => {
+      .then((sources) => {
         this.sources = { ...sources };
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response.data.error === "no-customer") this.noBilling = true;
       })
       .finally(() => (this.loading = ""));
@@ -264,14 +262,14 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("manage/getSources", {
         team: this.$route.params.team,
-        start: this.$store.state.manage.sources[this.$route.params.team].next
+        start: this.$store.state.manage.sources[this.$route.params.team].next,
       })
       .then(() => {
         this.sources = {
-          ...this.$store.getters["manage/sources"](this.$route.params.team)
+          ...this.$store.getters["manage/sources"](this.$route.params.team),
         };
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response.data.error === "no-customer") this.noBilling = true;
       })
       .finally(() => (this.loadingMore = false));
@@ -282,12 +280,12 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("manage/createSource", {
         team: this.$route.params.team,
-        ...this.newCard
+        ...this.newCard,
       })
-      .then(sources => {
+      .then((sources) => {
         this.sources = { ...sources };
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response.data.error === "no-customer") this.noBilling = true;
       })
       .finally(() => {
@@ -297,7 +295,7 @@ export default class ManageSettings extends Vue {
           number: "",
           exp_month: 1,
           exp_year: new Date().getUTCFullYear() + 5,
-          name: ""
+          name: "",
         };
       });
   }
@@ -308,12 +306,12 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("manage/deleteSource", {
         team: this.$route.params.team,
-        id
+        id,
       })
-      .then(sources => {
+      .then((sources) => {
         this.sources = { ...sources };
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response.data.error === "no-customer") this.noBilling = true;
       })
       .finally(() => {

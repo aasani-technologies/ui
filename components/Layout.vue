@@ -17,19 +17,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
 import Admin from "@/components/Admin.vue";
 import Users from "@/components/Users.vue";
 import TeamLayout from "@/components/TeamLayout.vue";
 import Policies from "@/components/Policies.vue";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 @Component({
   components: {
     Users,
     Admin,
     Policies,
-    TeamLayout
-  }
+    TeamLayout,
+  },
 })
 export default class Layout extends Vue {
   activeRoute = "default";

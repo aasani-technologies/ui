@@ -20,14 +20,14 @@
 </template>
 
 <script lang="ts">
+import LargeMessage from "@/components/LargeMessage.vue";
 import { Component, Vue } from "vue-property-decorator";
 import { mapGetters } from "vuex";
-import LargeMessage from "@/components/LargeMessage.vue";
 
 @Component({
   components: {
-    LargeMessage
-  }
+    LargeMessage,
+  },
 })
 export default class Token extends Vue {
   hasError = false;
@@ -44,7 +44,7 @@ export default class Token extends Vue {
     console.log("Code is", code);
     this.$store
       .dispatch(`auth/oauthLogin`, { code, service })
-      .then(response => {
+      .then((response) => {
         if (response === "2fa") {
           this.$router.push("/auth/2fa");
         }
@@ -52,7 +52,7 @@ export default class Token extends Vue {
           this.$router.replace("/");
         }
       })
-      .catch(error => {
+      .catch((error) => {
         this.hasError = true;
         throw new Error(error);
       });

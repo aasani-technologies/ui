@@ -55,7 +55,7 @@
                 <td v-if="apiKey.ipRestrictions || apiKey.referrerRestrictions">
                   {{
                     (apiKey.ipRestrictions || "").split(",").length +
-                      (apiKey.referrerRestrictions || "").split(",").length
+                    (apiKey.referrerRestrictions || "").split(",").length
                   }}
                   restriction{{
                     (apiKey.ipRestrictions || "").split(",").length +
@@ -69,9 +69,7 @@
                 <td><TimeAgo :date="apiKey.expiresAt" /></td>
                 <td class="text text--align-right">
                   <router-link
-                    :to="
-                      `/teams/${$route.params.team}/developer/api-keys/${apiKey.id}`
-                    "
+                    :to="`/teams/${$route.params.team}/developer/api-keys/${apiKey.id}`"
                     aria-label="View"
                     data-balloon-pos="up"
                     class="button button--type-icon"
@@ -79,9 +77,7 @@
                     <font-awesome-icon class="icon" icon="eye" fixed-width />
                   </router-link>
                   <router-link
-                    :to="
-                      `/teams/${$route.params.team}/developer/logs?key=${apiKey.id}`
-                    "
+                    :to="`/teams/${$route.params.team}/developer/logs?key=${apiKey.id}`"
                     aria-label="Logs"
                     data-balloon-pos="up"
                     class="button button--type-icon"
@@ -139,7 +135,7 @@
               :options="scopes"
               :value="newScopes"
               placeholder="Enter an IP address or CIDR, e.g., 192.168.1.1/42"
-              @input="val => (newScopes = val)"
+              @input="(val) => (newScopes = val)"
             />
             <p class="text text--color-muted text--size-small">
               You can add IP and referrer restrictions after creating the API
@@ -172,18 +168,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { getAllCountries } from "countries-and-timezones";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faArrowDown,
-  faSync,
-  faTrash,
-  faEye,
-  faChartLine
-} from "@fortawesome/free-solid-svg-icons";
 import Developer from "@/components/sidebars/Developer.vue";
 import Loading from "@/components/Loading.vue";
 import Confirm from "@/components/Confirm.vue";
@@ -196,6 +180,18 @@ import Select from "@/components/form/Select.vue";
 import { User } from "@/types/auth";
 import { ApiKeys, emptyPagination, ApiKey } from "@/types/manage";
 import translations from "@/locales/en";
+import {
+  faArrowDown,
+  faSync,
+  faTrash,
+  faEye,
+  faChartLine,
+} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllCountries } from "countries-and-timezones";
+import { mapGetters } from "vuex";
+import { Component, Vue, Watch } from "vue-property-decorator";
 const scopes = translations.scopes;
 library.add(faArrowDown, faSync, faTrash, faEye, faChartLine);
 
@@ -210,9 +206,9 @@ library.add(faArrowDown, faSync, faTrash, faEye, faChartLine);
     Select,
     LargeMessage,
     Checkbox,
-    Developer
+    Developer,
   },
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class ManageSettings extends Vue {
   apiKeys: ApiKeys = emptyPagination;
@@ -224,7 +220,7 @@ export default class ManageSettings extends Vue {
 
   private created() {
     this.apiKeys = {
-      ...this.$store.getters["manage/apiKeys"](this.$route.params.team)
+      ...this.$store.getters["manage/apiKeys"](this.$route.params.team),
     };
   }
 
@@ -232,10 +228,10 @@ export default class ManageSettings extends Vue {
     this.loading = "Loading your API keys";
     this.$store
       .dispatch("manage/getApiKeys", { team: this.$route.params.team })
-      .then(apiKeys => {
+      .then((apiKeys) => {
         this.apiKeys = { ...apiKeys };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loading = ""));
@@ -250,14 +246,14 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("manage/getApiKeys", {
         team: this.$route.params.team,
-        start: this.$store.state.manage.apiKeys[this.$route.params.team].next
+        start: this.$store.state.manage.apiKeys[this.$route.params.team].next,
       })
       .then(() => {
         this.apiKeys = {
-          ...this.$store.getters["manage/apiKeys"](this.$route.params.team)
+          ...this.$store.getters["manage/apiKeys"](this.$route.params.team),
         };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loadingMore = false));
@@ -268,12 +264,12 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("manage/createApiKey", {
         team: this.$route.params.team,
-        scopes: this.newScopes ? this.newScopes : undefined
+        scopes: this.newScopes ? this.newScopes : undefined,
       })
-      .then(apiKeys => {
+      .then((apiKeys) => {
         this.apiKeys = { ...apiKeys };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => {
@@ -288,12 +284,12 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("manage/deleteApiKey", {
         team: this.$route.params.team,
-        id: key
+        id: key,
       })
-      .then(apiKeys => {
+      .then((apiKeys) => {
         this.apiKeys = { ...apiKeys };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loading = ""));

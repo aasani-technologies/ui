@@ -28,7 +28,7 @@
       <LargeMessage
         v-else-if="
           $route.params.message === 'oauth' &&
-            $route.query.error === '404/user-not-found'
+          $route.query.error === '404/user-not-found'
         "
         heading="Wait, who are you?"
         text="We couldn't find an existing account with the email we found from this third-party service. Do you want to register instead?"
@@ -57,13 +57,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
 import LargeMessage from "@/components/LargeMessage.vue";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   components: {
-    LargeMessage
-  }
+    LargeMessage,
+  },
 })
 export default class Errors extends Vue {
   private created() {

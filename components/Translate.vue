@@ -3,9 +3,9 @@
 </template>
 
 <script lang="ts">
+import en from "@/locales/en";
 import { Component, Vue, Prop } from "vue-property-decorator";
 import flat from "flat";
-import en from "@/locales/en";
 
 @Component
 export default class Translate extends Vue {

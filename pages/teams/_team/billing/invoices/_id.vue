@@ -106,15 +106,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { getAllCountries } from "countries-and-timezones";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faCloudDownloadAlt,
-  faFileInvoice
-} from "@fortawesome/free-solid-svg-icons";
 import { invoices } from "stripe";
 import Loading from "@/components/Loading.vue";
 import BillingSidebar from "@/components/sidebars/Billing.vue";
@@ -125,6 +116,15 @@ import Checkbox from "@/components/form/Checkbox.vue";
 import Select from "@/components/form/Select.vue";
 import { User } from "@/types/auth";
 import { Invoices, emptyPagination } from "@/types/manage";
+import {
+  faCloudDownloadAlt,
+  faFileInvoice,
+} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllCountries } from "countries-and-timezones";
+import { mapGetters } from "vuex";
+import { Component, Vue, Watch } from "vue-property-decorator";
 library.add(faCloudDownloadAlt, faFileInvoice);
 
 @Component({
@@ -136,9 +136,9 @@ library.add(faCloudDownloadAlt, faFileInvoice);
     Select,
     BillingSidebar,
     LargeMessage,
-    Checkbox
+    Checkbox,
   },
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class ManageSettings extends Vue {
   invoice?: invoices.IInvoice;
@@ -150,7 +150,7 @@ export default class ManageSettings extends Vue {
       ...this.$store.getters["manage/invoice"](
         this.$route.params.team,
         this.$route.params.id
-      )
+      ),
     };
   }
 
@@ -159,9 +159,9 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("manage/getInvoice", {
         team: this.$route.params.team,
-        id: this.$route.params.id
+        id: this.$route.params.id,
       })
-      .then(invoice => {
+      .then((invoice) => {
         this.invoice = { ...invoice };
       })
       .catch(() => {})

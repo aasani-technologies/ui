@@ -27,16 +27,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import Input from "@/components/form/Input.vue";
 import Loading from "@/components/Loading.vue";
 import Card from "@/components/Card.vue";
 import { Memberships } from "@/types/users";
 import { emptyPagination } from "@/types/manage";
+import { Component, Vue } from "vue-property-decorator";
+import { mapGetters } from "vuex";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 library.add(faGoogle);
 
 @Component({
@@ -44,12 +44,12 @@ library.add(faGoogle);
     Card,
     Loading,
     Input,
-    FontAwesomeIcon
+    FontAwesomeIcon,
   },
   computed: mapGetters({
     isAuthenticated: "auth/isAuthenticated",
-    isLoading: "auth/isLoading"
-  })
+    isLoading: "auth/isLoading",
+  }),
 })
 export default class Login extends Vue {
   code = "";
@@ -58,10 +58,10 @@ export default class Login extends Vue {
     this.$store
       .dispatch("auth/loginWith2FA", {
         code: this.code,
-        token: this.$store.state.auth.tokens.twoFactorToken
+        token: this.$store.state.auth.tokens.twoFactorToken,
       })
       .then(() => this.$store.dispatch("users/getMemberships", { slug: "me" }))
-      .then(memberships => {
+      .then((memberships) => {
         if (
           memberships?.data.length &&
           memberships?.data[0]?.organization?.username
@@ -71,7 +71,7 @@ export default class Login extends Vue {
           );
         return this.$router.replace("/");
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => {

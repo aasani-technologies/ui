@@ -41,20 +41,20 @@
 </template>
 
 <script lang="ts">
+import Autocomplete from "@/components/form/Autocomplete.vue";
+import en from "@/locales/en";
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
-import Autocomplete from "@/components/form/Autocomplete.vue";
-import en from "@/locales/en";
 const months = en.months;
 library.add(faQuestionCircle);
 
 @Component({
   components: {
     FontAwesomeIcon,
-    Autocomplete
-  }
+    Autocomplete,
+  },
 })
 export default class Checkbox extends Vue {
   @Prop({ default: "text" }) type;
@@ -66,9 +66,7 @@ export default class Checkbox extends Vue {
   @Prop() help;
   @Prop({ default: false }) questionMark;
   @Prop() autocomplete;
-  labelId = Math.random()
-    .toString(36)
-    .substring(7);
+  labelId = Math.random().toString(36).substring(7);
 
   months = months;
 }

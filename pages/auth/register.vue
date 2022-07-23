@@ -67,23 +67,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { mapGetters } from "vuex";
 import Card from "@/components/Card.vue";
 import LargeMessage from "@/components/LargeMessage.vue";
 import Loading from "@/components/Loading.vue";
 import Input from "@/components/form/Input.vue";
+import { mapGetters } from "vuex";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   components: {
     Card,
     LargeMessage,
     Loading,
-    Input
+    Input,
   },
   computed: mapGetters({
-    isAuthenticated: "auth/isAuthenticated"
-  })
+    isAuthenticated: "auth/isAuthenticated",
+  }),
 })
 export default class Login extends Vue {
   name = "";
@@ -101,12 +101,12 @@ export default class Login extends Vue {
         email: this.email,
         name: this.name,
         password: this.password,
-        invitedByUser: this.invitedByUser ? this.invitedByUser : undefined
+        invitedByUser: this.invitedByUser ? this.invitedByUser : undefined,
       })
       .then(() => {
         this.completedRegistration = true;
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => {

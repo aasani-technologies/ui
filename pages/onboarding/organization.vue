@@ -53,20 +53,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { mapGetters } from "vuex";
 import Loading from "@/components/Loading.vue";
 import Input from "@/components/form/Input.vue";
+import { Component, Vue } from "vue-property-decorator";
+import { mapGetters } from "vuex";
 
 @Component({
   computed: mapGetters({
-    user: "auth/user"
+    user: "auth/user",
   }),
   components: {
     Input,
-    Loading
+    Loading,
   },
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class OnboardingTeam extends Vue {
   teamName = "";
@@ -83,14 +83,14 @@ export default class OnboardingTeam extends Vue {
     this.$store
       .dispatch("users/createOrganization", {
         name: this.teamName,
-        slug: this.user.username || this.user.id
+        slug: this.user.username || this.user.id,
       })
       .then(() =>
         this.$store.dispatch("users/getMemberships", {
-          slug: this.user.username || this.user.id
+          slug: this.user.username || this.user.id,
         })
       )
-      .then(memberships => {
+      .then((memberships) => {
         if (
           memberships?.data.length &&
           memberships?.data[0]?.organization?.username

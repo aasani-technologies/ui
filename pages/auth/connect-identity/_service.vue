@@ -11,23 +11,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { mapGetters } from "vuex";
 import Card from "@/components/Card.vue";
 import LargeMessage from "@/components/LargeMessage.vue";
 import Input from "@/components/form/Input.vue";
 import { User } from "../../../types/auth";
+import { mapGetters } from "vuex";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   components: {
     Card,
     LargeMessage,
-    Input
+    Input,
   },
   computed: mapGetters({
     isAuthenticated: "auth/isAuthenticated",
-    user: "auth/user"
-  })
+    user: "auth/user",
+  }),
 })
 export default class ConnectIdentity extends Vue {
   isAuthenticated!: boolean;

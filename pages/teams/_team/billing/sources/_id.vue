@@ -72,7 +72,7 @@
                 :value="source.name"
                 label="Name"
                 placeholder="Enter your name on card"
-                @input="val => (source.name = val)"
+                @input="(val) => (source.name = val)"
               />
             </div>
             <div class="row">
@@ -81,21 +81,21 @@
                 label="Expiry month"
                 :options="months"
                 required
-                @input="val => (source.exp_month = val)"
+                @input="(val) => (source.exp_month = val)"
               />
               <Select
                 :value="source.exp_year"
                 label="Expiry year"
                 :options="years"
                 required
-                @input="val => (source.exp_year = val)"
+                @input="(val) => (source.exp_year = val)"
               />
             </div>
             <button class="button">Update card</button>
             <button
               type="button"
               class="button button--color-danger"
-              style="margin-left: 1rem"
+              style="margin-left: 1rem;"
               @click.prevent="() => (showDelete = true)"
             >
               Delete card
@@ -126,12 +126,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { getAllCountries } from "countries-and-timezones";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faArrowLeft, faSync } from "@fortawesome/free-solid-svg-icons";
 import { sources, cards } from "stripe";
 import Confirm from "@/components/Confirm.vue";
 import Loading from "@/components/Loading.vue";
@@ -145,6 +139,12 @@ import Select from "@/components/form/Select.vue";
 import { User } from "@/types/auth";
 import { Sources, emptyPagination } from "@/types/manage";
 import en from "@/locales/en";
+import { faArrowLeft, faSync } from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllCountries } from "countries-and-timezones";
+import { mapGetters } from "vuex";
+import { Component, Vue, Watch } from "vue-property-decorator";
 library.add(faArrowLeft, faSync);
 const months = en.months;
 
@@ -159,9 +159,9 @@ const months = en.months;
     FontAwesomeIcon,
     Select,
     LargeMessage,
-    Checkbox
+    Checkbox,
   },
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class ManageSettings extends Vue {
   source?: cards.ICardUpdateOptions;
@@ -176,7 +176,7 @@ export default class ManageSettings extends Vue {
       ...this.$store.getters["manage/source"](
         this.$route.params.team,
         this.$route.params.id
-      )
+      ),
     };
     for (let i = 0; i < 20; i++) {
       this.years.push(new Date().getUTCFullYear() + i);
@@ -192,9 +192,9 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("manage/getSource", {
         team: this.$route.params.team,
-        id: this.$route.params.id
+        id: this.$route.params.id,
       })
-      .then(source => {
+      .then((source) => {
         this.source = { ...source };
       })
       .catch(() => {})
@@ -210,8 +210,8 @@ export default class ManageSettings extends Vue {
         ...(this.source && {
           name: this.source.name,
           exp_month: this.source.exp_month,
-          exp_year: this.source.exp_year
-        })
+          exp_year: this.source.exp_year,
+        }),
       })
       .then(() => {})
       .catch(() => {})
@@ -224,12 +224,12 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("manage/deleteSource", {
         team: this.$route.params.team,
-        id: this.$route.params.id
+        id: this.$route.params.id,
       })
-      .then(source => {
+      .then((source) => {
         this.source = { ...source };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => {

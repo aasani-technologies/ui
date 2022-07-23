@@ -9,12 +9,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { getAllCountries } from "countries-and-timezones";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faSync } from "@fortawesome/free-solid-svg-icons";
 import Loading from "@/components/Loading.vue";
 import Input from "@/components/form/Input.vue";
 import SettingsSidebar from "@/components/sidebars/Settings.vue";
@@ -26,8 +20,14 @@ import { User } from "@/types/auth";
 import {
   OrganizationsKV,
   Organization,
-  emptyOrganization
+  emptyOrganization,
 } from "@/types/manage";
+import { faSync } from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllCountries } from "countries-and-timezones";
+import { mapGetters } from "vuex";
+import { Component, Vue, Watch } from "vue-property-decorator";
 library.add(faSync);
 
 @Component({
@@ -39,9 +39,9 @@ library.add(faSync);
     FontAwesomeIcon,
     Select,
     ImageInput,
-    Checkbox
+    Checkbox,
   },
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class Products extends Vue {
   loading = "";
@@ -49,7 +49,7 @@ export default class Products extends Vue {
 
   private created() {
     this.organization = {
-      ...this.$store.getters["manage/organization"](this.$route.params.team)
+      ...this.$store.getters["manage/organization"](this.$route.params.team),
     };
   }
 }

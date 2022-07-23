@@ -34,7 +34,7 @@
         <LargeMessage
           v-if="
             !loading &&
-              (!transactions || !transactions.data || !transactions.data.length)
+            (!transactions || !transactions.data || !transactions.data.length)
           "
           heading="No transactions yet"
           img="undraw_credit_card_payment_yb88.svg"
@@ -72,9 +72,7 @@
                 </td>
                 <td class="text text--align-right">
                   <router-link
-                    :to="
-                      `/teams/${$route.params.team}/billing/transactions/${transaction.id}`
-                    "
+                    :to="`/teams/${$route.params.team}/billing/transactions/${transaction.id}`"
                     aria-label="View"
                     data-balloon-pos="up"
                     class="button button--type-icon"
@@ -115,7 +113,7 @@
             :value="couponCode"
             label="Coupon code"
             placeholder="Copy and paste the coupon code"
-            @input="val => (couponCode = val)"
+            @input="(val) => (couponCode = val)"
           />
           <button class="button">Add credits</button>
         </form>
@@ -125,18 +123,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { getAllCountries } from "countries-and-timezones";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faEye,
-  faArrowDown,
-  faSync,
-  faCloudDownloadAlt,
-  faTrash
-} from "@fortawesome/free-solid-svg-icons";
 import Confirm from "@/components/Confirm.vue";
 import Loading from "@/components/Loading.vue";
 import TimeAgo from "@/components/TimeAgo.vue";
@@ -148,6 +134,18 @@ import Select from "@/components/form/Select.vue";
 import { User } from "@/types/auth";
 import { Transactions, emptyPagination } from "@/types/manage";
 import en from "@/locales/en";
+import {
+  faEye,
+  faArrowDown,
+  faSync,
+  faCloudDownloadAlt,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllCountries } from "countries-and-timezones";
+import { mapGetters } from "vuex";
+import { Component, Vue, Watch } from "vue-property-decorator";
 library.add(faEye, faCloudDownloadAlt, faArrowDown, faSync, faTrash);
 const months = en.months;
 
@@ -161,9 +159,9 @@ const months = en.months;
     FontAwesomeIcon,
     Select,
     LargeMessage,
-    Checkbox
+    Checkbox,
   },
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class ManageSettings extends Vue {
   transactions: Transactions = emptyPagination;
@@ -174,7 +172,7 @@ export default class ManageSettings extends Vue {
 
   private created() {
     this.transactions = {
-      ...this.$store.getters["manage/transactions"](this.$route.params.team)
+      ...this.$store.getters["manage/transactions"](this.$route.params.team),
     };
   }
 
@@ -182,10 +180,10 @@ export default class ManageSettings extends Vue {
     this.loading = "Loading your transactions";
     this.$store
       .dispatch("manage/getTransactions", { team: this.$route.params.team })
-      .then(transactions => {
+      .then((transactions) => {
         this.transactions = { ...transactions };
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response.data.error === "no-customer") this.noBilling = true;
       })
       .finally(() => (this.loading = ""));
@@ -201,14 +199,16 @@ export default class ManageSettings extends Vue {
       .dispatch("manage/getTransactions", {
         team: this.$route.params.team,
         start: this.$store.state.manage.transactions[this.$route.params.team]
-          .next
+          .next,
       })
       .then(() => {
         this.transactions = {
-          ...this.$store.getters["manage/transactions"](this.$route.params.team)
+          ...this.$store.getters["manage/transactions"](
+            this.$route.params.team
+          ),
         };
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response.data.error === "no-customer") this.noBilling = true;
       })
       .finally(() => (this.loadingMore = false));
@@ -219,12 +219,12 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("manage/availCredits", {
         team: this.$route.params.team,
-        couponCode: this.couponCode
+        couponCode: this.couponCode,
       })
-      .then(transactions => {
+      .then((transactions) => {
         this.transactions = { ...transactions };
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response.data.error === "no-customer") this.noBilling = true;
       })
       .finally(() => {

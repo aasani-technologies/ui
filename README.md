@@ -133,3 +133,7 @@ The development of Staart projects is supported by these wonderful companies. [F
 
 - Code: [MIT](https://github.com/staart/ui/blob/master/LICENSE)
 - Logo and assets: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+## Common Build Errors
+- [Error: Cannot find module '@babel/compat-data/corejs3-shipped-proposals'](https://github.com/laravel-mix/laravel-mix/issues/2383#issuecomment-643265068)
+- [Nuxt.js Cannot find module '@babel/preset-env/lib/utils'](https://stackoverflow.com/a/66328219)

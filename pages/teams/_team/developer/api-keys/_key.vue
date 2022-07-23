@@ -44,7 +44,7 @@
           <button
             type="button"
             class="button button--color-danger"
-            style="margin-left: 0.5rem"
+            style="margin-left: 0.5rem;"
             @click.prevent="showDelete = apiKey"
           >
             <font-awesome-icon class="icon icon--mr-1" icon="trash" />
@@ -60,25 +60,25 @@
                 label="Name"
                 placeholder="Enter a name for this API key"
                 :value="apiKey.name"
-                @input="val => (apiKey.name = val)"
+                @input="(val) => (apiKey.name = val)"
               />
               <CheckList
                 label="API restrictions"
                 :options="scopes"
                 :value="apiKey.scopes"
-                @input="val => (apiKey.scopes = val)"
+                @input="(val) => (apiKey.scopes = val)"
               />
               <CommaList
                 label="IP restrictions"
                 :value="apiKey.ipRestrictions"
                 placeholder="Enter an IP address or CIDR, e.g., 192.168.1.1/42"
-                @input="val => (apiKey.ipRestrictions = val)"
+                @input="(val) => (apiKey.ipRestrictions = val)"
               />
               <CommaList
                 label="Referrer restrictions"
                 :value="apiKey.referrerRestrictions"
                 placeholder="Enter a host name without protocol, e.g., example.com"
-                @input="val => (apiKey.referrerRestrictions = val)"
+                @input="(val) => (apiKey.referrerRestrictions = val)"
               />
               <button class="button">Update API key</button>
             </form>
@@ -128,22 +128,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { getAllCountries } from "countries-and-timezones";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faPencilAlt,
-  faArrowDown,
-  faSync,
-  faTrash,
-  faEye,
-  faEyeSlash,
-  faArrowLeft,
-  faCopy
-} from "@fortawesome/free-solid-svg-icons";
-import copy from "copy-to-clipboard";
 import Loading from "@/components/Loading.vue";
 import Developer from "@/components/sidebars/Developer.vue";
 import Confirm from "@/components/Confirm.vue";
@@ -158,6 +142,22 @@ import { User } from "@/types/auth";
 import { ApiKeys, emptyPagination, ApiKey } from "@/types/manage";
 import translations from "@/locales/en";
 import { removeNulls } from "@/helpers/crud";
+import copy from "copy-to-clipboard";
+import {
+  faPencilAlt,
+  faArrowDown,
+  faSync,
+  faTrash,
+  faEye,
+  faEyeSlash,
+  faArrowLeft,
+  faCopy,
+} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllCountries } from "countries-and-timezones";
+import { mapGetters } from "vuex";
+import { Component, Vue, Watch } from "vue-property-decorator";
 const scopes = translations.scopes;
 library.add(
   faPencilAlt,
@@ -182,9 +182,9 @@ library.add(
     Developer,
     Select,
     LargeMessage,
-    Checkbox
+    Checkbox,
   },
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class ManageSettings extends Vue {
   apiKeys: ApiKeys = emptyPagination;
@@ -200,7 +200,7 @@ export default class ManageSettings extends Vue {
       ...this.$store.getters["manage/apiKey"](
         this.$route.params.team,
         this.$route.params.key
-      )
+      ),
     };
   }
 
@@ -209,12 +209,12 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("manage/getApiKey", {
         team: this.$route.params.team,
-        id: this.$route.params.key
+        id: this.$route.params.key,
       })
-      .then(apiKey => {
+      .then((apiKey) => {
         this.apiKey = { ...apiKey };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loading = ""));
@@ -234,19 +234,19 @@ export default class ManageSettings extends Vue {
         "organizationId",
         "expiresAt",
         "createdAt",
-        "updatedAt"
-      ].forEach(k => delete apiKey[k]);
+        "updatedAt",
+      ].forEach((k) => delete apiKey[k]);
     }
     this.$store
       .dispatch("manage/updateApiKey", {
         team: this.$route.params.team,
         id: this.$route.params.key,
-        ...apiKey
+        ...apiKey,
       })
-      .then(apiKey => {
+      .then((apiKey) => {
         this.apiKey = { ...apiKey };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => {
@@ -260,15 +260,15 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("manage/deleteApiKey", {
         team: this.$route.params.team,
-        id: key
+        id: key,
       })
-      .then(apiKeys => {
+      .then((apiKeys) => {
         this.apiKeys = { ...apiKeys };
         this.$router.push(
           `/teams/${this.$route.params.team}/developer/api-keys`
         );
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loading = ""));

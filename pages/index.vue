@@ -14,14 +14,12 @@
               <nuxt-link
                 v-if="
                   memberships &&
-                    memberships.data &&
-                    memberships.data.length &&
-                    memberships.data[0].organization
+                  memberships.data &&
+                  memberships.data.length &&
+                  memberships.data[0].organization
                 "
                 class="button button--size-large button--color-primary"
-                :to="
-                  `/teams/${memberships.data[0].organization.username}/products`
-                "
+                :to="`/teams/${memberships.data[0].organization.username}/products`"
               >
                 <Translate t="buttons.goToDashboard" />
               </nuxt-link>
@@ -476,6 +474,9 @@
 </template>
 
 <script lang="ts">
+import Translate from "@/components/Translate.vue";
+import { Memberships } from "../types/users";
+import { emptyPagination } from "../types/manage";
 import { Component, Vue } from "vue-property-decorator";
 import { mapGetters } from "vuex";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -497,16 +498,13 @@ import {
   faLaptop,
   faHandsHelping,
   faCalendar,
-  faImage
+  faImage,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faNodeJs,
   faVuejs,
-  faAccessibleIcon
+  faAccessibleIcon,
 } from "@fortawesome/free-brands-svg-icons";
-import Translate from "@/components/Translate.vue";
-import { Memberships } from "../types/users";
-import { emptyPagination } from "../types/manage";
 library.add(
   faSync,
   faMagic,
@@ -532,12 +530,12 @@ library.add(
 
 @Component({
   computed: mapGetters({
-    isAuthenticated: "auth/isAuthenticated"
+    isAuthenticated: "auth/isAuthenticated",
   }),
   components: {
     Translate,
-    FontAwesomeIcon
-  }
+    FontAwesomeIcon,
+  },
 })
 export default class Home extends Vue {
   memberships: Memberships = emptyPagination;
@@ -548,7 +546,7 @@ export default class Home extends Vue {
     const user = this.$store.getters["auth/user"];
     if (user && user.username) {
       this.memberships = {
-        ...this.$store.getters["users/memberships"](user.username)
+        ...this.$store.getters["users/memberships"](user.username),
       };
     }
   }
@@ -565,10 +563,10 @@ export default class Home extends Vue {
     )
       this.$store
         .dispatch("users/getMemberships", { slug: user.username })
-        .then(memberships => {
+        .then((memberships) => {
           this.memberships = { ...memberships };
         })
-        .catch(error => {
+        .catch((error) => {
           throw new Error(error);
         });
   }

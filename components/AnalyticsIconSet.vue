@@ -20,16 +20,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import WhichBrowser from "which-browser";
 import Country from "@/components/Country.vue";
 import IconText from "@/components/IconText.vue";
+import { Component, Vue, Prop } from "vue-property-decorator";
+import WhichBrowser from "which-browser";
 
 @Component({
   components: {
     Country,
-    IconText
-  }
+    IconText,
+  },
 })
 export default class AnalyticsIconSet extends Vue {
   @Prop() countryCode;

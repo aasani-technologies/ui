@@ -19,7 +19,7 @@
         <LargeMessage
           v-if="
             !loading &&
-              (!accessTokens || !accessTokens.data || !accessTokens.data.length)
+            (!accessTokens || !accessTokens.data || !accessTokens.data.length)
           "
           heading="No access tokens yet"
           img="undraw_software_engineer_lvl5.svg"
@@ -54,9 +54,7 @@
                 <td><TimeAgo :date="accessToken.expiresAt" /></td>
                 <td class="text text--align-right">
                   <router-link
-                    :to="
-                      `/users/${$route.params.slug}/access-tokens/${accessToken.id}`
-                    "
+                    :to="`/users/${$route.params.slug}/access-tokens/${accessToken.id}`"
                     aria-label="View"
                     data-balloon-pos="up"
                     class="button button--type-icon"
@@ -109,7 +107,7 @@
             :options="scopes"
             :value="newScopes"
             placeholder="Enter an IP address or CIDR, e.g., 192.168.1.1/42"
-            @input="val => (newScopes = val)"
+            @input="(val) => (newScopes = val)"
           />
           <button class="button">Create access token</button>
         </form>
@@ -137,17 +135,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { getAllCountries } from "countries-and-timezones";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faArrowDown,
-  faSync,
-  faTrash,
-  faEye
-} from "@fortawesome/free-solid-svg-icons";
 import Loading from "@/components/Loading.vue";
 import Confirm from "@/components/Confirm.vue";
 import TimeAgo from "@/components/TimeAgo.vue";
@@ -159,6 +146,17 @@ import Select from "@/components/form/Select.vue";
 import { User } from "@/types/auth";
 import { AccessTokens, emptyPagination, AccessToken } from "@/types/users";
 import translations from "@/locales/en";
+import {
+  faArrowDown,
+  faSync,
+  faTrash,
+  faEye,
+} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllCountries } from "countries-and-timezones";
+import { mapGetters } from "vuex";
+import { Component, Vue, Watch } from "vue-property-decorator";
 const scopes = translations.userScopes;
 library.add(faArrowDown, faSync, faTrash, faEye);
 
@@ -172,9 +170,9 @@ library.add(faArrowDown, faSync, faTrash, faEye);
     FontAwesomeIcon,
     Select,
     LargeMessage,
-    Checkbox
+    Checkbox,
   },
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class ManageSettings extends Vue {
   accessTokens: AccessTokens = emptyPagination;
@@ -186,7 +184,7 @@ export default class ManageSettings extends Vue {
 
   private created() {
     this.accessTokens = {
-      ...this.$store.getters["users/accessTokens"](this.$route.params.slug)
+      ...this.$store.getters["users/accessTokens"](this.$route.params.slug),
     };
   }
 
@@ -194,10 +192,10 @@ export default class ManageSettings extends Vue {
     this.loading = "Loading your access tokens";
     this.$store
       .dispatch("users/getAccessTokens", { slug: this.$route.params.slug })
-      .then(accessTokens => {
+      .then((accessTokens) => {
         this.accessTokens = { ...accessTokens };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loading = ""));
@@ -213,14 +211,14 @@ export default class ManageSettings extends Vue {
       .dispatch("users/getAccessTokens", {
         slug: this.$route.params.slug,
         start: this.$store.state.users.accessTokens[this.$route.params.slug]
-          .next
+          .next,
       })
       .then(() => {
         this.accessTokens = {
-          ...this.$store.getters["users/accessTokens"](this.$route.params.slug)
+          ...this.$store.getters["users/accessTokens"](this.$route.params.slug),
         };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loadingMore = false));
@@ -231,12 +229,12 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("users/createAccessToken", {
         slug: this.$route.params.slug,
-        scopes: this.newScopes ? this.newScopes : undefined
+        scopes: this.newScopes ? this.newScopes : undefined,
       })
-      .then(accessTokens => {
+      .then((accessTokens) => {
         this.accessTokens = { ...accessTokens };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => {
@@ -251,12 +249,12 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("users/deleteAccessToken", {
         slug: this.$route.params.slug,
-        id: key
+        id: key,
       })
-      .then(accessTokens => {
+      .then((accessTokens) => {
         this.accessTokens = { ...accessTokens };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loading = ""));

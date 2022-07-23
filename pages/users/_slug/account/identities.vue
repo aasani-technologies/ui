@@ -22,7 +22,7 @@
         <LargeMessage
           v-if="
             !loading &&
-              (!identities || !identities.data || !identities.data.length)
+            (!identities || !identities.data || !identities.data.length)
           "
           heading="No identities yet"
           img="undraw_software_engineer_lvl5.svg"
@@ -129,21 +129,6 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { mapGetters } from "vuex";
-import { getAllCountries } from "countries-and-timezones";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faArrowDown,
-  faSync,
-  faTrash,
-  faCheckCircle,
-  faExclamationCircle,
-  faStar,
-  faEnvelopeOpen
-} from "@fortawesome/free-solid-svg-icons";
-import { faGithub, faMicrosoft } from "@fortawesome/free-brands-svg-icons";
 import Loading from "@/components/Loading.vue";
 import Confirm from "@/components/Confirm.vue";
 import AccountSidebar from "@/components/sidebars/Account.vue";
@@ -155,6 +140,21 @@ import Select from "@/components/form/Select.vue";
 import { User } from "@/types/auth";
 import { Identities, emptyPagination, Identity } from "@/types/users";
 import en from "@/locales/en";
+import { faGithub, faMicrosoft } from "@fortawesome/free-brands-svg-icons";
+import {
+  faArrowDown,
+  faSync,
+  faTrash,
+  faCheckCircle,
+  faExclamationCircle,
+  faStar,
+  faEnvelopeOpen,
+} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllCountries } from "countries-and-timezones";
+import { mapGetters } from "vuex";
+import { Component, Vue, Watch } from "vue-property-decorator";
 const serviceIdentities = en.serviceIdentities;
 library.add(
   faArrowDown,
@@ -178,9 +178,9 @@ library.add(
     AccountSidebar,
     Select,
     LargeMessage,
-    Checkbox
+    Checkbox,
   },
-  middleware: "auth"
+  middleware: "auth",
 })
 export default class ManageSettings extends Vue {
   identities: Identities = emptyPagination;
@@ -192,7 +192,7 @@ export default class ManageSettings extends Vue {
 
   private created() {
     this.identities = {
-      ...this.$store.getters["users/identities"](this.$route.params.slug)
+      ...this.$store.getters["users/identities"](this.$route.params.slug),
     };
   }
 
@@ -200,10 +200,10 @@ export default class ManageSettings extends Vue {
     this.loading = "Loading your identities";
     this.$store
       .dispatch("users/getIdentities", { slug: this.$route.params.slug })
-      .then(identities => {
+      .then((identities) => {
         this.identities = { ...identities };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loading = ""));
@@ -218,14 +218,14 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("users/getIdentities", {
         slug: this.$route.params.slug,
-        start: this.$store.state.users.identities[this.$route.params.slug].next
+        start: this.$store.state.users.identities[this.$route.params.slug].next,
       })
       .then(() => {
         this.identities = {
-          ...this.$store.getters["users/identities"](this.$route.params.slug)
+          ...this.$store.getters["users/identities"](this.$route.params.slug),
         };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loadingMore = false));
@@ -237,12 +237,12 @@ export default class ManageSettings extends Vue {
     this.$store
       .dispatch("users/deleteIdentity", {
         slug: this.$route.params.slug,
-        id: key
+        id: key,
       })
-      .then(identities => {
+      .then((identities) => {
         this.identities = { ...identities };
       })
-      .catch(error => {
+      .catch((error) => {
         throw new Error(error);
       })
       .finally(() => (this.loading = ""));
@@ -253,7 +253,7 @@ export default class ManageSettings extends Vue {
     const data = await this.$axios.put(
       `/users/${this.$route.params.slug}/identities`,
       {
-        service
+        service,
       }
     );
     location.replace(data.data.url);
