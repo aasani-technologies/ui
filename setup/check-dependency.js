@@ -8,13 +8,13 @@ const checkDependency = async () => {
     (await fs.readFile(path.join(__dirname, "..", "package.json"))).toString()
   );
   if (
-    pkg.name !== "@staart/ui" &&
-    !Object.keys(pkg.devDependencies).includes("@staart/ui")
+    pkg.name !== "@aasani-technologies/ui" &&
+    !Object.keys(pkg.devDependencies).includes("@aasani-technologies/ui")
   ) {
     if (process.env.USE_NPM || !hasYarn()) {
-      shell.exec("npm install --save-dev @staart/ui");
+      shell.exec("npm install --save-dev @aasani-technologies/ui");
     } else {
-      shell.exec("yarn add -D @staart/ui");
+      shell.exec("yarn add -D @aasani-technologies/ui");
     }
   }
 };

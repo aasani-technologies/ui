@@ -111,6 +111,7 @@ const config: Configuration = {
             fix: true
           }
         });
+        config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
       }
     }
   },
