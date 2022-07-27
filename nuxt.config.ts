@@ -113,6 +113,11 @@ const config: Configuration = {
         });
         config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
       }
+    },
+    babel: {
+      plugins: [
+        "@babel/plugin-proposal-optional-chaining"
+      ]
     }
   },
   typescript: {

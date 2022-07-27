@@ -137,3 +137,4 @@ The development of Staart projects is supported by these wonderful companies. [F
 ## Common Build Errors
 - [Error: Cannot find module '@babel/compat-data/corejs3-shipped-proposals'](https://github.com/laravel-mix/laravel-mix/issues/2383#issuecomment-643265068)
 - [Nuxt.js Cannot find module '@babel/preset-env/lib/utils'](https://stackoverflow.com/a/66328219)
+- [Nuxt: using `optional chaining operator` operator (.?)](https://stackoverflow.com/a/62129486)

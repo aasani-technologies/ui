@@ -328,7 +328,7 @@ export default class Card extends Vue {
     if (!(window as any).Feeedback) return;
     const feedback = new (window as any).Feeedback({
       onSubmit: (result) =>
-        new Promise((resolve, reject) => {
+        new Promise<void>((resolve, reject) => {
           if (
             (window as any).agastya &&
             typeof (window as any).agastya.secureTrack === "function"
