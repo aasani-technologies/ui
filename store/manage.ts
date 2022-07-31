@@ -23,7 +23,8 @@ export const state = (): RootState => ({
   devWebhook: {},
   apiKeyLogs: {},
   transactions: {},
-  transaction: {}
+  transaction: {},
+  pdf2TableJobs: {}
 });
 
 export const mutations: MutationTree<RootState> = {
@@ -201,6 +202,21 @@ export const mutations: MutationTree<RootState> = {
     currentDomains[team].hasMore = hasMore;
     Vue.set(state, "domains", currentDomains);
   },
+  setPdf2TableJobs(state: RootState, { team, pdf2TableJobs, start, next, hasMore }): void {
+    const currentJobs = { ...state.domains };
+    currentJobs[team] = currentJobs[team] || emptyPagination;
+    if (start) {
+      currentJobs[team].data = [
+        ...currentJobs[team].data,
+        ...pdf2TableJobs.data
+      ];
+    } else {
+      currentJobs[team].data = pdf2TableJobs.data;
+    }
+    currentJobs[team].next = next;
+    currentJobs[team].hasMore = hasMore;
+    Vue.set(state, "pdf2TableJobs", currentJobs);
+  },
   setDomain(state: RootState, { team, domain, id }): void {
     const currentDomains = { ...state.domain };
     currentDomains[team] = currentDomains[team] || {};
@@ -259,6 +275,7 @@ export const mutations: MutationTree<RootState> = {
     currentState.devWebhook = {};
     currentState.transactions = {};
     currentState.transaction = {};
+    currentState.pdf2TableJobs = {};
     state = currentState;
   }
 };
@@ -507,6 +524,13 @@ export const actions: ActionTree<RootState, RootState> = {
     commit("setDomains", { team, domains, start, next: domains.next });
     return domains;
   },
+  async getPdf2TableJobs({ commit }, { team, start = 0 }) {
+    const pdf2TableJobs: any = (
+      await this.$axios.get(`/organizations/${team}/pdf2table?start=${start}`)
+    ).data;
+    commit("setPdf2TableJobs", { team, pdf2TableJobs, start, next: pdf2TableJobs.next });
+    return pdf2TableJobs;
+  },
   async getDomain({ commit }, { team, id }) {
     const domain: any = (
       await this.$axios.get(`/organizations/${team}/domains/${id}`)
@@ -519,6 +543,14 @@ export const actions: ActionTree<RootState, RootState> = {
     delete data.team;
     await this.$axios.put(`/organizations/${context.team}/domains`, data);
     return dispatch("getDomains", { team: context.team });
+  },
+  async createPdf2TableJob({ dispatch }, {team, formData}) {    
+    await this.$axios.put(`/organizations/${team}/pdf2table`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    });
+    return dispatch("getPdf2TableJobs", { team });
   },
   async deleteDomain({ dispatch }, context) {
     await this.$axios.delete(
@@ -616,6 +648,7 @@ export const getters: GetterTree<RootState, RootState> = {
   domains: state => (team: string) => state.domains[team],
   domain: state => (team: string, domain: string) =>
     state.domain[team] && state.domain[team][domain],
+  pdf2TableJobs: state => (team: string) => state.pdf2TableJobs[team],
   webhooks: state => (team: string) => state.devWebhooks[team],
   webhook: state => (team: string, webhook: string) =>
     state.devWebhook[team] && state.devWebhook[team][webhook],

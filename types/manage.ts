@@ -25,6 +25,9 @@ export interface ApiKey extends IdRow {
   referrerRestrictions?: string;
 }
 export type ApiKeyLogs = any;
+export interface Pdf2TableJob extends Row {
+  
+}
 export interface Domain extends Row {
   domain: string;
   verificationCode: string;
@@ -58,6 +61,9 @@ export interface ApiKeys extends Paginated {
 }
 export interface Domains extends Paginated {
   data: Domain[];
+}
+export interface Pdf2TableJobs extends Paginated {
+  data: Pdf2TableJob[];
 }
 export interface Webhooks extends Paginated {
   data: Webhook[];
@@ -102,6 +108,12 @@ export interface ApiKeysKV {
   [index: string]: ApiKeys;
 }
 export interface DomainsKV {
+  [index: string]: Domains;
+}
+export interface Pdf2TableJobsKV {
+  [index: string]: Pdf2TableJobs;
+}
+export interface pdfKV {
   [index: string]: Domains;
 }
 export interface WebhooksKV {
@@ -170,6 +182,7 @@ export interface RootState {
   apiKey: SingleApiKeyKV;
   apiKeyLogs: SingleApiKeyLogsKV;
   domains: DomainsKV;
+  pdf2TableJobs:Pdf2TableJobsKV;
   domain: SingleDomainKV;
   devWebhooks: WebhooksKV;
   devWebhook: SingleWebhookKV;

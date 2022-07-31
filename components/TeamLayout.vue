@@ -6,6 +6,9 @@
           <nuxt-link :to="`/teams/${$route.params.team}/products`">
             Products
           </nuxt-link>
+          <nuxt-link :to="`/teams/${$route.params.team}/pdf2table`">
+            Pdf to Table
+          </nuxt-link>
           <nuxt-link :to="`/teams/${$route.params.team}/members`">
             Members
           </nuxt-link>
